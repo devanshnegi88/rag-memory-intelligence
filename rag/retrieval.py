@@ -32,8 +32,12 @@ class HybridRetriever:
         
     def build_index(self, messages: List[Dict], use_tfidf: bool = True) -> None:
         self.messages = messages
-        contents = [m['content'] for m in messages]
+        contents = [m['content'] for m in messages if m.get('content')]
         
+        if not contents:
+            logger.warning("No message content to index.")
+            return
+
         logger.info(f"Building embeddings for {len(contents)} messages...")
         self.message_embeddings = self.model.encode(
             contents, 
@@ -48,12 +52,38 @@ class HybridRetriever:
         if use_tfidf:
             logger.info("Building TF-IDF matrix...")
             self.tfidf_vectorizer = TfidfVectorizer(
-                max_features=100,
+                max_features=500, # Increased from 100
                 stop_words='english',
                 min_df=1,
-                max_df=1.0
+                max_df=1.0,
+                ngram_range=(1, 2) # Capture "software engineer", "San Francisco"
             )
             self.tfidf_matrix = self.tfidf_vectorizer.fit_transform(contents)
+    
+    def add_messages(self, new_messages: List[Dict]) -> None:
+        """Add new messages to the index in real-time."""
+        if not new_messages:
+            return
+            
+        start_idx = len(self.messages)
+        self.messages.extend(new_messages)
+        
+        contents = [m['content'] for m in new_messages]
+        new_embeddings = self.model.encode(contents).astype('float32')
+        
+        # Add to FAISS
+        if self.faiss_index is not None:
+            self.faiss_index.add(new_embeddings)
+            
+        # Update embeddings array for metadata/save
+        if self.message_embeddings is not None:
+            import numpy as np
+            self.message_embeddings = np.vstack([self.message_embeddings, new_embeddings])
+        else:
+            self.message_embeddings = new_embeddings
+            
+        # Note: TF-IDF is not incrementally updated for performance
+        # but the semantic (FAISS) search will pick up the new messages immediately.
     
     def retrieve(self, query: str, k: int = 5, 
                 use_dense: bool = True, use_keyword: bool = True) -> List[Dict]:

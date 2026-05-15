@@ -1,0 +1,52 @@
+[
+  {
+    "day": "2024-01-01",
+    "persona": [
+      "positive sentiment",
+      "curious inquisitive",
+      "enthusiastic"
+    ],
+    "formality": "informal",
+    "sentiment": "positive",
+    "trigger": "creating a chatbot"
+  },
+  {
+    "day": "2024-01-02",
+    "persona": [
+      "positive sentiment",
+      "curious inquisitive",
+      "enthusiastic",
+      "polite respectful"
+    ],
+    "formality": "informal",
+    "sentiment": "positive",
+    "trigger": "work, frontend, thanks",
+    "drift_score": 0.125
+  },
+  {
+    "day": "2024-01-03",
+    "persona": [
+      "polite respectful"
+    ],
+    "formality": "formal",
+    "sentiment": "neutral",
+    "trigger": "imagine, remember, actually",
+    "drift_score": 0.675
+  },
+  {
+    "day": "2024-02-01",
+    "persona": [],
+    "formality": "formal",
+    "sentiment": "neutral",
+    "trigger": "currently, living, york",
+    "drift_score": 0.5
+  },
+  {
+    "day": "2024-02-05",
+    "persona": [],
+    "formality": "formal",
+    "sentiment": "neutral",
+    "trigger": "just, moved, seattle",
+    "drift_score": 0.0
+  }
+]

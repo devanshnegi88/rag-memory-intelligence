@@ -5,6 +5,7 @@ from typing import List, Dict
 from .topic_detection import TopicDetector
 from .summarization import SummarizationEngine
 from .retrieval import HybridRetriever
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +113,28 @@ class RAGIndexer:
             'topic_count': len(self.topics),
             'checkpoint_count': len(self.checkpoints)
         }
+
+    def load_rag_system(self, summaries_path: str, index_path: str) -> None:
+        """
+        Load RAG system from saved state.
+        """
+        logger.info(f"Loading RAG system from {summaries_path} and {index_path}...")
+        
+        # Load summaries
+        with open(summaries_path, 'r') as f:
+            self.topics = json.load(f)
+            
+        # Load checkpoints
+        checkpoints_path = summaries_path.replace('.json', '_checkpoints.json')
+        if os.path.exists(checkpoints_path):
+            with open(checkpoints_path, 'r') as f:
+                self.checkpoints = json.load(f).get('checkpoints', [])
+        
+        # Load index
+        self.retriever.load_index(index_path)
+        self.messages = self.retriever.messages
+        
+        logger.info("RAG system loaded successfully!")
     
     def _save_checkpoints(self, checkpoints: List[Dict], output_path: str) -> None:
         """Save checkpoint summaries to JSON."""
