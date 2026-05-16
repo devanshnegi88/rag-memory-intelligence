@@ -16,29 +16,63 @@ class ConflictResolver:
         """
         conflicts = []
         
-        # Simple entity-based conflict detection
-        # Look for patterns like "My X is Y" vs "My X is Z"
-        entities = {} # entity_name -> (value, message_dict)
+        # Track attributes of entities found in messages
+        # Structure: { (entity_type, entity_name): (value, message_dict) }
+        # e.g., { ("sister", "job"): ("doctor", msg_dict) }
+        attributes = {}
         
-        for res in results:
+        # Sort results by index to ensure chronological comparison
+        # (Assuming message_index or date exists)
+        sorted_results = sorted(results, key=lambda x: x.get('message_index', 0))
+        
+        for res in sorted_results:
             content = res['content'].lower()
             
-            # Simple patterns
-            # 1. "lives in [location]" or "moved to [location]"
-            location_match = self._extract_pattern(content, r"(?:lives in|moved to) (\w+)")
-            if location_match:
-                if "residence" in entities and entities["residence"][0] != location_match:
-                    conflicts.append((entities["residence"][1], res, f"Residence conflict: {entities['residence'][0]} vs {location_match}"))
-                entities["residence"] = (location_match, res)
-                
-            # 2. "is a [occupation]"
-            job_match = self._extract_pattern(content, r"is a (\w+)")
-            if job_match:
-                if "job" in entities and entities["job"][0] != job_match:
-                    conflicts.append((entities["job"][1], res, f"Job conflict: {entities['job'][0]} vs {job_match}"))
-                entities["job"] = (job_match, res)
+            # 1. Detect Relationship Attributes (e.g., "My sister is a doctor")
+            # Patterns: "my [relation] is/works as/lives in [value]"
+            rel_patterns = [
+                (r"my (sister|brother|friend|mom|dad|boss) (?:is|works as) a? (\w+)", "job"),
+                (r"my (sister|brother|friend|mom|dad|boss) lives in (\w+)", "location"),
+                (r"my (sister|brother|friend|mom|dad|boss) is (\d+) years old", "age")
+            ]
+            
+            for pattern, attr_type in rel_patterns:
+                match = self._extract_groups(content, pattern)
+                if match:
+                    relation, value = match
+                    key = (relation, attr_type)
+                    
+                    if key in attributes:
+                        old_value, old_msg = attributes[key]
+                        if old_value != value:
+                            conflicts.append((old_msg, res, f"{relation.capitalize()}'s {attr_type} changed: {old_value} -> {value}"))
+                    
+                    attributes[key] = (value, res)
+            
+            # 2. General Self-Attributes (e.g., "I live in Delhi")
+            self_patterns = [
+                (r"i (?:live in|moved to) (\w+)", "residence"),
+                (r"i (?:am|work as) a? (\w+)", "job")
+            ]
+            
+            for pattern, attr_type in self_patterns:
+                value = self._extract_pattern(content, pattern)
+                if value:
+                    key = ("self", attr_type)
+                    if key in attributes:
+                        old_value, old_msg = attributes[key]
+                        if old_value != value:
+                            conflicts.append((old_msg, res, f"Personal {attr_type} changed: {old_value} -> {value}"))
+                    attributes[key] = (value, res)
                 
         return conflicts
+
+    def _extract_groups(self, text: str, pattern: str) -> Tuple[str, ...]:
+        import re
+        match = re.search(pattern, text)
+        if match:
+            return match.groups()
+        return None
 
     def _extract_pattern(self, text: str, pattern: str) -> str:
         import re

@@ -22,8 +22,11 @@ class RAGRanker:
             # 1. Similarity score
             sim_score = res.get('score', 0.5)
             
-            # 2. Recency score
-            recency_score = 0.5
+            # 2. Recency score (newer messages get higher score)
+            # Find the max index among results to normalize
+            max_idx = max([r.get('message_index', 1000) for r in results]) if results else 1000
+            current_idx = res.get('message_index', 0)
+            recency_score = current_idx / max_idx if max_idx > 0 else 0.5
             
             # 3. Emotional weight
             emotional_weight = self._calculate_emotional_weight(content)
