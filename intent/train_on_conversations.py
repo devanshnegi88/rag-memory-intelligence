@@ -22,11 +22,11 @@ def label_message(text):
         return "emotional-support"
     
     # 3. Action Item
-    if any(k in text for k in ["task", "todo", "to do", "finish", "complete", "need to", "should start", "must"]):
+    if any(k in text for k in ["task", "todo", "to do", "finish", "complete", "need to", "should start", "must", "have to", "plan to", "going to"]):
         return "action-item"
     
     # 4. Small Talk (Questions and greetings)
-    if any(k in text for k in ["hi", "hello", "how are", "weather", "tell me", "did i mention", "have we talked", "what is", "who is"]):
+    if any(k in text for k in ["hi", "hello", "how are", "weather", "tell me", "did i mention", "have we talked", "what is", "who is", "thanks"]):
         return "small-talk"
     
     return "unknown"
@@ -38,12 +38,12 @@ def process_and_train(csv_path, output_model_path):
     all_user_messages = []
     
     # Extract messages from the 'conversation' column
-    for conv in df['conversation'].dropna().head(5000): # Process first 5000 rows for speed/balance
+    for conv in df['conversation'].dropna().head(10000): # Process more rows for better coverage
         lines = str(conv).split('\n')
         for line in lines:
             if "User 1:" in line:
                 msg = line.split("User 1:")[1].strip()
-                if len(msg.split()) > 2: # Ignore very short words
+                if len(msg.split()) > 2:
                     all_user_messages.append(msg)
     
     logger.info(f"Extracted {len(all_user_messages)} messages. Labeling...")
@@ -55,10 +55,17 @@ def process_and_train(csv_path, output_model_path):
     
     labeled_df = pd.DataFrame(labeled_data)
     
-    # Balance the dataset (ensure we have enough of each class)
-    # Filter out unknowns if we have too many
+    # CAP UNKNOWN SAMPLES to prevent class imbalance from drowning out specifics
+    unknowns = labeled_df[labeled_df['label'] == 'unknown']
+    others = labeled_df[labeled_df['label'] != 'unknown']
+    
+    if len(unknowns) > 5000:
+        unknowns = unknowns.sample(5000, random_state=42)
+    
+    labeled_df = pd.concat([others, unknowns])
+    
     counts = labeled_df['label'].value_counts()
-    logger.info(f"Initial Label Distribution:\n{counts}")
+    logger.info(f"Balanced Label Distribution:\n{counts}")
     
     # Training
     pipeline = Pipeline([
