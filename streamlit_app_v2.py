@@ -241,8 +241,13 @@ if menu == "💬 Conflict-Aware Chat":
             if msg["role"] == "user":
                 st.markdown(f"""<div class="chat-bubble user-bubble">{msg['content']}</div>""", unsafe_allow_html=True)
             else:
+                conf_val = msg.get('confidence', 0.0)
+                conf_color = "#10b981" if conf_val > 0.7 else "#f59e0b" if conf_val > 0.4 else "#ef4444"
+                
                 st.markdown(f"""<div class="chat-bubble bot-bubble">
-                    <div class="intent-badge">{msg.get('intent', 'unknown')}</div>
+                    <div class="intent-badge" style="border-bottom: 2px solid {conf_color}">
+                        {msg.get('intent', 'unknown')} | {conf_val*100:.0f}% confidence
+                    </div>
                     <div>{msg['content']}</div>
                 </div>""", unsafe_allow_html=True)
 
@@ -283,14 +288,27 @@ if menu == "💬 Conflict-Aware Chat":
             # 4. Final Response
             response = engines["generator"].generate(query, ranked, conflicts)
             
+            # Calculate an aggregate memory confidence (average of top 2 if available)
+            mem_conf = 0.0
+            if ranked:
+                top_scores = [r.get('final_score', 0.0) for r in ranked[:2]]
+                mem_conf = sum(top_scores) / len(top_scores)
+
             # Display Bot response
             st.session_state.messages_v2.append({
                 "role": "bot", 
                 "content": response,
-                "intent": intent_res["intent"]
+                "intent": intent_res["intent"],
+                "confidence": intent_res["confidence"],
+                "memory_confidence": mem_conf
             })
+            
+            conf_color = "#10b981" if intent_res["confidence"] > 0.7 else "#f59e0b" if intent_res["confidence"] > 0.4 else "#ef4444"
+            
             st.markdown(f"""<div class="chat-bubble bot-bubble">
-                <div class="intent-badge">{intent_res['intent']}</div>
+                <div class="intent-badge" style="border-bottom: 2px solid {conf_color}">
+                    {intent_res['intent']} | {intent_res['confidence']*100:.0f}% confidence
+                </div>
                 <div>{response}</div>
             </div>""", unsafe_allow_html=True)
             st.rerun()
