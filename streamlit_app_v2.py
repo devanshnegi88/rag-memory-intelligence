@@ -42,29 +42,28 @@ st.set_page_config(
 # Premium CSS
 st.markdown("""
 <style>
+    /* Theme-Aware Premium Styles */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
     
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
     }
     
-    .main {
-        background-color: #0f172a;
-        color: #f8fafc;
-    }
-    
     .stApp {
-        background: radial-gradient(circle at top right, #1e293b, #0f172a);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        /* Subtle adaptive gradient */
+        background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent);
     }
     
-    /* Glassmorphism containers */
     .glass-card {
-        background: rgba(30, 41, 59, 0.7);
+        background: var(--secondary-background-color);
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(128, 128, 128, 0.1);
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     
     .chat-bubble {
@@ -76,36 +75,31 @@ st.markdown("""
     
     .user-bubble {
         background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white !important;
         align-self: flex-end;
         margin-left: auto;
         border-bottom-right-radius: 4px;
     }
     
     .bot-bubble {
-        background: rgba(51, 65, 85, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--secondary-background-color);
+        border: 1px solid rgba(128, 128, 128, 0.2);
+        color: var(--text-color);
         align-self: flex-start;
         border-bottom-left-radius: 4px;
-    }
-    
-    .conflict-warning {
-        background: rgba(239, 68, 68, 0.15);
-        border-left: 4px solid #ef4444;
-        padding: 12px;
-        border-radius: 8px;
-        margin-top: 10px;
-        font-size: 0.9rem;
     }
     
     .intent-badge {
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(128, 128, 128, 0.1);
         padding: 2px 8px;
         border-radius: 999px;
         margin-bottom: 4px;
         display: inline-block;
+        color: var(--text-color);
+        opacity: 0.8;
     }
 </style>
 """, unsafe_allow_html=True)
