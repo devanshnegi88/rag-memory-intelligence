@@ -176,16 +176,9 @@ with st.sidebar:
         st.cache_resource.clear()
         st.rerun()
         
-    st.subheader("📁 Dataset Selection")
-    available_files = [f.name for f in DATA_DIR.glob("*.csv")]
-    if "example_data.csv" not in available_files and Path("example_data.csv").exists():
-        available_files.append("example_data.csv")
-    
-    selected_dataset = st.selectbox(
-        "Choose memory source:",
-        available_files,
-        index=available_files.index("example_data.csv") if "example_data.csv" in available_files else 0
-    )
+    st.subheader("📁 Memory Source")
+    selected_dataset = "conversations.csv"
+    st.info(f"Using default: {selected_dataset}")
     
     engines = init_round2_engines_v2(selected_dataset)
     
