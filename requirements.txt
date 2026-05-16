@@ -1,9 +1,11 @@
-streamlit
-pandas
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+streamlit==1.35.0
+torch==2.3.1+cpu
+torchvision==0.18.1+cpu
+transformers==4.41.2
+pillow
 numpy
-sentence-transformers
-faiss-cpu
-scikit-learn
-plotly
-torch
-pathlib
+opencv-python-headless
+timm
+safetensors
