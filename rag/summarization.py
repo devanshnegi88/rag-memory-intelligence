@@ -170,14 +170,26 @@ class SummarizationEngine:
 
         # 2. Try Gemini fallback
         if self.gemini_model is not None:
-            try:
+                # Extract question and messages safely without backslashes in f-string
+                lines = text.split('\n')
+                question = 'Summarize the text.'
+                if 'Question: ' in text:
+                    for line in lines:
+                        if 'Question: ' in line:
+                            question = line.split('Question: ')[-1]
+                            break
+                
+                messages_part = text
+                if 'Messages:\n' in text:
+                    messages_part = text.split('Messages:\n')[-1]
+
                 prompt = (
                     f"You are an assistant describing a user's behavior and statements based on chat logs.\n"
                     f"Answer the following question based ONLY on the provided messages.\n"
                     f"Always use the third person (e.g., 'The user is...', 'They mentioned...').\n"
                     f"IMPORTANT: Do not include speaker labels like 'User 1:' or 'Assistant:' in your response.\n"
-                    f"Question: {text.split('Question: ')[-1].split('\\n')[0] if 'Question: ' in text else 'Summarize the text.'}\n\n"
-                    f"Messages:\n{text.split('Messages:\\n')[-1] if 'Messages:\\n' in text else text}\n\n"
+                    f"Question: {question}\n\n"
+                    f"Messages:\n{messages_part}\n\n"
                     f"Concise Answer:"
                 )
                 response = self.gemini_model.generate_content(prompt)
