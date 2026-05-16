@@ -170,19 +170,20 @@ class SummarizationEngine:
 
         # 2. Try Gemini fallback
         if self.gemini_model is not None:
-                # Extract question and messages safely without backslashes in f-string
-                lines = text.split('\n')
-                question = 'Summarize the text.'
-                if 'Question: ' in text:
-                    for line in lines:
-                        if 'Question: ' in line:
-                            question = line.split('Question: ')[-1]
-                            break
-                
-                messages_part = text
-                if 'Messages:\n' in text:
-                    messages_part = text.split('Messages:\n')[-1]
+            # Extract question and messages safely without backslashes in f-string
+            lines = text.split('\n')
+            question = 'Summarize the text.'
+            if 'Question: ' in text:
+                for line in lines:
+                    if 'Question: ' in line:
+                        question = line.split('Question: ')[-1]
+                        break
+            
+            messages_part = text
+            if 'Messages:\n' in text:
+                messages_part = text.split('Messages:\n')[-1]
 
+            try:
                 prompt = (
                     f"You are an assistant describing a user's behavior and statements based on chat logs.\n"
                     f"Answer the following question based ONLY on the provided messages.\n"
