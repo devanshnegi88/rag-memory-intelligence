@@ -1,0 +1,51 @@
+text,label
+Remind me to call my sister tomorrow,reminder
+Don't forget to buy milk,reminder
+Set a reminder for the meeting at 3pm,reminder
+Remind me about the dentist appointment,reminder
+I need a reminder for my flight,reminder
+Don't let me forget the anniversary,reminder
+Please remind me to check the oven in 10 minutes,reminder
+Can you remind me about my sister's birthday?,reminder
+Remind me to pay the bills,reminder
+I'm feeling really stressed today,emotional-support
+I feel down and lonely,emotional-support
+I'm so happy and excited!,emotional-support
+Everything is going wrong I'm frustrated,emotional-support
+I need some emotional support,emotional-support
+Life is tough right now,emotional-support
+I'm anxious about the presentation,emotional-support
+I am very sad today,emotional-support
+I need someone to talk to I'm feeling low,emotional-support
+I'm so angry about what happened,emotional-support
+I need to finish the project by tonight,action-item
+I should start working on the report,action-item
+Task: Fix the bug in the code,action-item
+To do: Email the manager,action-item
+I have to complete the assignment,action-item
+Need to wash the car this weekend,action-item
+I must finish my homework,action-item
+I need to go to the gym later,action-item
+I've got a lot of tasks to complete today,action-item
+How are you doing today?,small-talk
+Did I mention anything about my sister?,small-talk
+Tell me about my past conversations,small-talk
+Hi there how's it going?,small-talk
+What do you know about me?,small-talk
+Nice weather we're having,small-talk
+Hello bot,small-talk
+Did I tell you about my job?,small-talk
+Have we talked about my family before?,small-talk
+What's your favorite color?,small-talk
+Just checking in,small-talk
+Good morning!,small-talk
+Hey how's life?,small-talk
+asdfghjkl,unknown
+123456789,unknown
+random noise here,unknown
+unknown intent message,unknown
+!!!,unknown
+the the the,unknown
+qwertyuiop,unknown
+random string of characters,unknown
+zzzzzzzz,unknown

@@ -53,6 +53,6 @@ def train_model(dataset_path: str, model_path: str):
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
     train_model(
-        os.path.join(base_dir, "dataset.csv"),
+        os.path.join(base_dir, "intent_training_data.csv"),
         os.path.join(base_dir, "model.pkl")
     )
