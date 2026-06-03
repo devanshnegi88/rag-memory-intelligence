@@ -1,15 +1,112 @@
-# Memory Intelligence & Conflict Resolution
+🧠 Memory Intelligence & Conflict Resolution System
 
-This extension upgrades the RAG platform from simple retrieval to **Conversation Intelligence**. It implements adaptive personality tracking, offline intent classification, and a sophisticated conflict-resolution pipeline.
+An advanced AI memory platform that extends Retrieval-Augmented Generation (RAG) with adaptive persona tracking, offline intent classification, and conflict-aware memory retrieval.
 
-## 🧠 Intelligence Modules
+The system analyzes conversation history, tracks personality evolution over time, resolves contradictory memories, and provides intelligent context-aware responses through a memory-aware chatbot interface.
 
-### 1. Adaptive Persona Drift Engine
-Located in `/persona`, this module tracks the evolution of the user's character over time.
-- **Temporal Grouping**: Analyzes conversations day-by-day.
-- **Drift Scoring**: Uses statistical distance between character traits (sentiment, formality, verbosity) to detect shifts.
-- **Trigger Detection**: Links persona changes to specific events (e.g., "new job", "relocation").
+---
 
+Features
+
+🧠 Adaptive Persona Intelligence
+
+- Persona Drift Detection
+- Temporal Personality Tracking
+- Behavioral Pattern Analysis
+- Trigger Event Identification
+
+🎯 Offline Intent Classification
+
+- Local CPU Inference
+- TF-IDF + Logistic Regression
+- Real-Time Intent Detection
+- Privacy-First Architecture
+
+⚖️ Conflict-Aware Memory Retrieval
+
+- Contradictory Memory Detection
+- Recency-Based Ranking
+- Emotional Weight Scoring
+- Memory Conflict Resolution
+
+💬 Memory-Aware Chatbot
+
+- Context-Aware Responses
+- Intelligent Memory Retrieval
+- Intent-Aware Interactions
+- Conversation Intelligence
+
+---
+
+Tech Stack
+
+Backend
+
+- Python
+- FastAPI / Flask
+
+Machine Learning
+
+- Scikit-Learn
+- TF-IDF Vectorization
+- Logistic Regression
+
+AI & Memory Systems
+
+- FAISS
+- Sentence Transformers
+- RAG Architecture
+
+Frontend
+
+- Streamlit
+- HTML
+- CSS
+- JavaScript
+
+---
+
+System Workflow
+
+1. Process conversation history
+2. Detect persona changes over time
+3. Classify user intent locally
+4. Build memory indexes
+5. Detect conflicting memories
+6. Retrieve relevant context
+7. Generate intelligent responses
+
+---
+
+Key Capabilities
+
+- Adaptive Persona Tracking
+- Persona Drift Analytics
+- Offline Intent Classification
+- Conflict-Aware Retrieval
+- Memory Consistency Resolution
+- Privacy-First Intelligence
+- Conversation Memory Analytics
+
+---
+
+Future Enhancements
+
+- 🤖 Multi-Agent Memory Architecture
+- 🧠 Long-Term Episodic Memory
+- 🖼️ Multimodal Memory Understanding
+- 🎙️ Voice Conversation Intelligence
+- ⚡ Real-Time Memory Streaming
+
+---
+
+Author
+
+Devansh Negi
+
+GitHub: https://github.com/devanshnegi88
+
+LinkedIn: https://linkedin.com/in/devansh-negi005
 ### 2. Offline Intent Classifier
 Located in `/intent`, this is a privacy-first, local inference engine.
 - **Architecture**: TF-IDF vectorization with a Logistic Regression classifier.
