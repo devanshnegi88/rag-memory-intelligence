@@ -1,4 +1,4 @@
-#🧠 Memory Intelligence & Conflict      Resolution System
+# 🧠 Memory Intelligence & Conflict      Resolution System
 
 ##An advanced conversation intelligence platform that extends Retrieval-Augmented Generation (RAG) with adaptive persona tracking, offline intent classification, and conflict-aware memory retrieval.
 
